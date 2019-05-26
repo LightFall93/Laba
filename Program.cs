@@ -67,51 +67,59 @@ namespace Laba
             var file_mas = dirInfo.GetFiles();
 
 
-            foreach (var item in file_mas)
-            {
-                Console.WriteLine(item.FullName +" "+ item.CreationTime);
-            }
+            //foreach (var item in file_mas)
+            //{
+            //    Console.WriteLine(item.Name + " " + item.FullName +" "+ item.CreationTime);
+            //}
 
-            Image myImage = Image.FromFile(@"E:\Images2\IMG_20140912_183647.JPG");
-            PropertyItem propItem = myImage.GetPropertyItem(306);
-            DateTime dtaken;
-            DateTime dtaken2;
+            DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
+            var file_mas2 = dirInfo2.GetFiles();
+            
 
-            string sdate = Encoding.UTF8.GetString(propItem.Value).Trim();
-            //Console.WriteLine("sdate: " + sdate);
-            string secondhalf = sdate.Substring(sdate.IndexOf(" "), (sdate.Length - sdate.IndexOf(" ")));
-            string firsthalf = sdate.Substring(0, 10);
-            firsthalf = firsthalf.Replace(":", "-");
-            sdate = firsthalf + secondhalf;
-            dtaken = DateTime.Parse(sdate);
-            //Console.WriteLine("dtaken: " + dtaken);
+            //Image myImage = Image.FromFile(@"E:\Images2\IMG_20140912_183647.JPG");
+            //PropertyItem propItem = myImage.GetPropertyItem(306);
 
 
-            DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathEntered);
+            
 
-                //foreach (var item in file_mas)
-                foreach (FileInfo item in dirInfo.GetFiles("*.jpg*"))
+
+           
+
+
+
+            //foreach (var item in file_mas2)
+            foreach (FileInfo item in dirInfo.GetFiles("*.jpg*"))
                 {
+                    File.Copy(item.FullName, ImagePathCreated + "\\" + item.Name, true);
+                }
 
-                File.Copy(item.FullName, ImagePathCreated + "\\" + item.Name, true);
-
-                File.Move("oldfilename", "newfilename");
-
-                Image myImage2 = Image.FromFile(item.FullName);
-                PropertyItem propItem2 = myImage.GetPropertyItem(306);
+            foreach (var item in file_mas2)
+            {
+                Image myImage = Image.FromFile(item.FullName);
+                PropertyItem propItem = myImage.GetPropertyItem(306);
 
                 string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
-                Console.WriteLine("sdate2: " + sdate2);
                 string secondhalf2 = sdate2.Substring(sdate2.IndexOf(" "), (sdate2.Length - sdate2.IndexOf(" ")));
                 string firsthalf2 = sdate2.Substring(0, 10);
                 firsthalf2 = firsthalf2.Replace(":", "-");
+                secondhalf2 = secondhalf2.Replace(":", "-");
                 sdate2 = firsthalf2 + secondhalf2;
-                dtaken2 = DateTime.Parse(sdate2);
-                Console.WriteLine("dtaken2: " + dtaken2);
+                Console.WriteLine("sdate2: " + sdate2);
 
-                //File.Copy(file.FullName, ImagePathCreated + "\\" + file.Name,true);
-                }
 
+                var sourcePath =item.FullName;
+                //Console.WriteLine("sourcePath: " + sourcePath);
+                var destinationPath = ImagePathCreated + "\\" + sdate2;
+                //Console.WriteLine("destinationPath: " + destinationPath);
+                FileInfo info = new FileInfo(sourcePath);
+                info.MoveTo(destinationPath);
+
+
+
+                //File.Move(item.FullName, item.FullName.Replace(item.Name,sdate2));
+                //File.Move(item.FullName, "new");
+
+            }
 
 
 
