@@ -10,7 +10,7 @@ namespace Laba
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Ваши команды ");
+            Console.WriteLine("Ваши команды  ");
             Console.WriteLine("Переименование изображении в соответствии с датой сьемки.");
             Console.WriteLine("Добавления на изображение отметку, когда фото было сделано.");
             Console.WriteLine("Сортировка изображений по папкам по годам. ");
