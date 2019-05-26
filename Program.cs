@@ -107,12 +107,26 @@ namespace Laba
                 Console.WriteLine("sdate2: " + sdate2);
 
 
-                var sourcePath =item.FullName;
+
+                //var sourcePath = item.FullName;
+                var sourcePath = $"E:\\333\\zz\\zz_Переименование изображении в соответствии с датой сьемки\\ddsdf.jpg";
                 //Console.WriteLine("sourcePath: " + sourcePath);
-                var destinationPath = ImagePathCreated + "\\" + sdate2;
-                //Console.WriteLine("destinationPath: " + destinationPath);
-                FileInfo info = new FileInfo(sourcePath);
-                info.MoveTo(destinationPath);
+                var newName = firsthalf2;
+                //Console.WriteLine("firsthalf2: " + firsthalf2);
+                var directory = Path.GetDirectoryName(sourcePath);
+                var destinationPath = Path.Combine(directory, newName);
+                File.Move(sourcePath, destinationPath);
+
+
+
+
+
+                //var sourcePath =item.FullName;
+                ////Console.WriteLine("sourcePath: " + sourcePath);
+                //var destinationPath = ImagePathCreated + "\\" + sdate2;
+                ////Console.WriteLine("destinationPath: " + destinationPath);
+                //FileInfo info = new FileInfo(sourcePath);
+                //info.MoveTo(destinationPath);
 
 
 
