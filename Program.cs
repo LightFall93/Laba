@@ -25,7 +25,7 @@ namespace Laba
             Console.WriteLine("Введите 3 для: "+ com3);
 
                 //switch (Console.ReadLine())
-                switch ("1")
+                switch ("2")
             {
                     case "1":
                     {
@@ -35,7 +35,7 @@ namespace Laba
 
                     case "2":
                     {
-                        JustRename();
+                        AddDateOnImagePicture(com2);
                     }
                         break;
 
@@ -46,8 +46,6 @@ namespace Laba
                         break;
 
                 }
-            
-
             Console.ReadLine();
         }
 
@@ -63,17 +61,13 @@ namespace Laba
             DirectoryInfo dirInfo = new DirectoryInfo(ImagePathEntered);
 
             DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
-            
 
             if (!dirInfo2.Exists)
             {
                 dirInfo.CreateSubdirectory($"{dirName}_{com1}");
             }
-            
 
             var file_mas = dirInfo.GetFiles();
-
-
 
             foreach (var item in file_mas)
             {
@@ -88,7 +82,6 @@ namespace Laba
                     catch { }
                     if (propItem != null)
                     {
-                       
                         string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
                         string secondhalf2 = sdate2.Substring(sdate2.IndexOf(" "), (sdate2.Length - sdate2.IndexOf(" ")));
                         secondhalf2 = secondhalf2.TrimEnd(secondhalf2[secondhalf2.Length - 1]);
@@ -97,16 +90,8 @@ namespace Laba
                         secondhalf2 = secondhalf2.Replace(":", "-");
                         sdate2 = firsthalf2 + secondhalf2;
                         sdate2 = sdate2.Replace(" ", "_");
-
-                        //var sourcePath = item.FullName;
-                        //var newName = firsthalf2;
-                        //var directory = Path.GetDirectoryName(sourcePath);
-                        //var destinationPath = Path.Combine(directory, newName);
-
-                        Console.WriteLine(item.FullName + $@"{ImagePathCreated}\{sdate2}" + ".jpg");
-
+                        Console.WriteLine("Файл "+ item.FullName +" Скопирован "+ $@"{ImagePathCreated}\{sdate2}" + ".jpg");
                         File.Copy(item.FullName, $@"{ImagePathCreated}\{sdate2}" + ".jpg", true);
-
                     }
 
                     else
@@ -114,46 +99,42 @@ namespace Laba
                         string tempName = Convert.ToString(item.CreationTime);
                         tempName = tempName.Replace(" ", "_");
                         tempName = tempName.Replace(".", "-");
-                        tempName = tempName.Replace(":", "_");
-
-                        if (!dirInfo.Exists)
-                        {
-                            dirInfo.Create();
-                        }
+                        tempName = tempName.Replace(":", "_");                    
                         File.Copy(item.FullName, $@"{ImagePathCreated}\{tempName}" + ".jpg", true);
-                        
 
                     }
-
-                    
-                   
-
-                   
-
-
-
                 }
-                
-                //item.MoveTo($@"{ImagePathCreated}\{ sdate2}" + ".jpg");
-                //File.Move(item.FullName, $@"{ImagePathCreated}\{sdate2}" + ".jpg");
-                //File.Move(sourcePath, destinationPath);
-
-                //var sourcePath =item.FullName;
-                ////Console.WriteLine("sourcePath: " + sourcePath);
-                //var destinationPath = ImagePathCreated + "\\" + sdate2;
-                ////Console.WriteLine("destinationPath: " + destinationPath);
-                //FileInfo info = new FileInfo(sourcePath);
-                //info.MoveTo(destinationPath);
-
-                //File.Move(item.FullName, item.FullName.Replace(item.Name,sdate2));
-                //File.Move(item.FullName, "new");
-
             }
 
 
 
 
         }
+
+        public static void AddDateOnImagePicture(string com2)
+        {
+            Console.WriteLine("Введите ваш путь к папке изображений, который надо обработать.");
+            //string ImagePathEntered = Console.ReadLine();
+            string ImagePathEntered = "E:\\Images";
+
+            string dirName = new DirectoryInfo(ImagePathEntered).Name;
+
+            string ImagePathCreated = ImagePathEntered + $"\\{dirName}_{com2}";
+            DirectoryInfo dirInfo = new DirectoryInfo(ImagePathEntered);
+
+            DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
+
+            if (!dirInfo2.Exists)
+            {
+                dirInfo.CreateSubdirectory($"{dirName}_{com2}");
+            }
+
+        }
+
+
+
+
+
 
         public static void JustRename()
         {
@@ -168,7 +149,6 @@ namespace Laba
             string tempName;
             foreach (var items in file_mas)
             {
-                
                 tempName = Convert.ToString(items.CreationTime);
                 tempName = tempName.Replace(" ", "_");
                 tempName = tempName.Replace(".", "-");
@@ -183,7 +163,6 @@ namespace Laba
 
                 Console.WriteLine(tempName); 
                 Console.WriteLine($@"{items.DirectoryName}\{items.CreationTime}");
-                //Console.WriteLine(items.CreationTime+ items.DirectoryName);
             }
 
         }
