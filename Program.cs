@@ -61,67 +61,82 @@ namespace Laba
 
             string ImagePathCreated = ImagePathEntered + $"\\{dirName}_{com1}";
             DirectoryInfo dirInfo = new DirectoryInfo(ImagePathEntered);
+
+            DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
             
-            dirInfo.CreateSubdirectory($"{dirName}_{com1}");
+
+            if (!dirInfo2.Exists)
+            {
+                dirInfo.CreateSubdirectory($"{dirName}_{com1}");
+            }
+            
 
             var file_mas = dirInfo.GetFiles();
 
 
-            //foreach (var item in file_mas)
-            //{
-            //    Console.WriteLine(item.Name + " " + item.FullName +" "+ item.CreationTime);
-            //}
-
-            //DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
-            //var file_mas2 = dirInfo2.GetFiles();
-            
-
-            //Image myImage = Image.FromFile(@"E:\Images2\IMG_20140912_183647.JPG");
-            //PropertyItem propItem = myImage.GetPropertyItem(306);
-
-
-
-            //foreach (var item in file_mas2)
-            //foreach (FileInfo item in dirInfo.GetFiles("*.jpg*"))
-            //    {
-            //        File.Copy(item.FullName, ImagePathCreated + "\\" + item.Name, true);
-            //    }
 
             foreach (var item in file_mas)
             {
-                Image myImage = Image.FromFile(item.FullName);
-                PropertyItem propItem = myImage.GetPropertyItem(306);
+                if (item.Name.EndsWith(".jpg"))
+                {
+                    PropertyItem propItem = null;
+                    Image myImage = Image.FromFile(item.FullName);
+                    try
+                    {
+                        propItem = myImage.GetPropertyItem(306);
+                    }
+                    catch { }
+                    if (propItem != null)
+                    {
+                       
+                        string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
+                        string secondhalf2 = sdate2.Substring(sdate2.IndexOf(" "), (sdate2.Length - sdate2.IndexOf(" ")));
+                        secondhalf2 = secondhalf2.TrimEnd(secondhalf2[secondhalf2.Length - 1]);
+                        string firsthalf2 = sdate2.Substring(0, 10);
+                        firsthalf2 = firsthalf2.Replace(":", "-");
+                        secondhalf2 = secondhalf2.Replace(":", "-");
+                        sdate2 = firsthalf2 + secondhalf2;
+                        sdate2 = sdate2.Replace(" ", "_");
+
+                        //var sourcePath = item.FullName;
+                        //var newName = firsthalf2;
+                        //var directory = Path.GetDirectoryName(sourcePath);
+                        //var destinationPath = Path.Combine(directory, newName);
+
+                        Console.WriteLine(item.FullName + $@"{ImagePathCreated}\{sdate2}" + ".jpg");
+
+                        File.Copy(item.FullName, $@"{ImagePathCreated}\{sdate2}" + ".jpg", true);
+
+                    }
+
+                    else
+                    {
+                        string tempName = Convert.ToString(item.CreationTime);
+                        tempName = tempName.Replace(" ", "_");
+                        tempName = tempName.Replace(".", "-");
+                        tempName = tempName.Replace(":", "_");
+
+                        if (!dirInfo.Exists)
+                        {
+                            dirInfo.Create();
+                        }
+                        File.Copy(item.FullName, $@"{ImagePathCreated}\{tempName}" + ".jpg", true);
+                        
+
+                    }
+
+                    
+                   
+
+                   
+
+
+
+                }
                 
-                string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
-                string secondhalf2 = sdate2.Substring(sdate2.IndexOf(" "), (sdate2.Length - sdate2.IndexOf(" ")));
-                secondhalf2 = secondhalf2.TrimEnd(secondhalf2[secondhalf2.Length - 1]);
-                string firsthalf2 = sdate2.Substring(0, 10);
-                firsthalf2 = firsthalf2.Replace(":", "-");
-                secondhalf2 = secondhalf2.Replace(":", "-");
-                sdate2 = firsthalf2 + secondhalf2;
-                sdate2 = sdate2.Replace(" ", "_");
-                
-                //Console.WriteLine("sdate2+1: " + sdate2);
-
-
-                var sourcePath = item.FullName;
-                //Console.WriteLine("sourcePath: " + sourcePath);
-                var newName = firsthalf2;
-                //Console.WriteLine("firsthalf2: " + firsthalf2);
-                var directory = Path.GetDirectoryName(sourcePath);
-                var destinationPath = Path.Combine(directory, newName);
-
-                Console.WriteLine(item.FullName + $@"{ImagePathCreated}\{sdate2}" + ".jpg");
-
-
-                File.Copy(item.FullName, $@"{ImagePathCreated}\{sdate2}" + ".jpg");
                 //item.MoveTo($@"{ImagePathCreated}\{ sdate2}" + ".jpg");
                 //File.Move(item.FullName, $@"{ImagePathCreated}\{sdate2}" + ".jpg");
                 //File.Move(sourcePath, destinationPath);
-
-
-
-
 
                 //var sourcePath =item.FullName;
                 ////Console.WriteLine("sourcePath: " + sourcePath);
@@ -129,8 +144,6 @@ namespace Laba
                 ////Console.WriteLine("destinationPath: " + destinationPath);
                 //FileInfo info = new FileInfo(sourcePath);
                 //info.MoveTo(destinationPath);
-
-
 
                 //File.Move(item.FullName, item.FullName.Replace(item.Name,sdate2));
                 //File.Move(item.FullName, "new");
@@ -151,9 +164,6 @@ namespace Laba
 
             var file_mas = dirInfo.GetFiles();
             FileInfo filemas2 = new FileInfo(ImagePathEntered);
-
-
-
 
             string tempName;
             foreach (var items in file_mas)
@@ -176,13 +186,6 @@ namespace Laba
                 //Console.WriteLine(items.CreationTime+ items.DirectoryName);
             }
 
-
-
-            //for (int i= 0;i<file_mas.Length;i++)
-            //{
-            //    file_mas.CopyTo();
-            //    //File.Move(item.FullName, ImagePathEntered+ $"\\new"); //переименовывает дописываю нью
-            //}
         }
     }
 }
