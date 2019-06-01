@@ -24,8 +24,7 @@ namespace Laba
             Console.WriteLine("Введите 2 для: "+ com2);
             Console.WriteLine("Введите 3 для: "+ com3);
 
-                //switch (Console.ReadLine())
-                switch ("3")
+                switch (Console.ReadLine())
             {
                     case "1":
                     {
