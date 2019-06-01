@@ -14,8 +14,7 @@ namespace Laba
     {
         static void Main(string[] args)
         {
-
-            string com1 = "Переименование изображении в соответствии с датой сьемки";
+            string com1 = "Переименование изображении в соответствии с датой его создания";
             string com2 = "Добавления на изображение отметку, когда фото было сделано";
             string com3 = "Сортировка изображений  по годам";
 
@@ -51,8 +50,8 @@ namespace Laba
         public static void ImageRenameWithDate(string com1)
         {
             Console.WriteLine("Введите ваш путь к папке изображений, который надо обработать.");
-            //string ImagePathEntered = Console.ReadLine();
-            string ImagePathEntered = "E:\\Images";
+            string ImagePathEntered = Console.ReadLine();
+            //string ImagePathEntered = "E:\\Images";
 
             string dirName = new DirectoryInfo(ImagePathEntered).Name;
 
@@ -102,8 +101,6 @@ namespace Laba
                         File.Copy(item.FullName, $@"{ImagePathCreated}\{tempName}" + ".jpg", true);
 
                     }
-
-
                 }
             }
 
@@ -115,14 +112,11 @@ namespace Laba
         public static void AddDateOnImagePicture(string com2)
         {
             Console.WriteLine("Введите ваш путь к папке изображений, который надо обработать.");
-            //string ImagePathEntered = Console.ReadLine();
-            string ImagePathEntered = "E:\\Images";
-
+            string ImagePathEntered = Console.ReadLine();
+            //string ImagePathEntered = "E:\\Images";
             string dirName = new DirectoryInfo(ImagePathEntered).Name;
-
             string ImagePathCreated = ImagePathEntered + $"\\{dirName}_{com2}";
             DirectoryInfo dirInfo = new DirectoryInfo(ImagePathEntered);
-
             DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
 
             var file_mas = dirInfo.GetFiles();
@@ -154,7 +148,6 @@ namespace Laba
                         secondhalf2 = secondhalf2.Replace(":", "-");
                         sdate2 = firsthalf2 + secondhalf2;
                         sdate2 = sdate2.Replace(" ", "_");
-
                         Image img = Image.FromFile(item.FullName);
 
                         using (Graphics g = Graphics.FromImage(img))
@@ -188,17 +181,13 @@ namespace Laba
 
                     }
 
-                    
-
                 }
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-
             }
-
         }
 
         public static void JustRename()
@@ -392,7 +381,9 @@ namespace Laba
                     {
                         propItem = myImage.GetPropertyItem(306);
                     }
+
                     catch { }
+
                     if (propItem != null)
                     {
                         string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
@@ -413,7 +404,6 @@ namespace Laba
                         tempName = tempName.Replace(".", "-");
                         tempName = tempName.Replace(":", "_");
                         tempName = tempName.Substring(6, 4);
-                        Console.WriteLine(tempName);
                         DirectoryInfo dirInfo3 = new DirectoryInfo($@"{ImagePathCreated}\{tempName}");
                         if (!dirInfo3.Exists)
                         {
@@ -423,8 +413,6 @@ namespace Laba
                         File.Copy(item.FullName, $@"{ImagePathCreated}\{tempName}\{item.Name}" + ".jpg", true);
 
                     }
-
-
                 }
             }
         }
