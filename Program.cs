@@ -17,7 +17,7 @@ namespace Laba
 
             string com1 = "Переименование изображении в соответствии с датой сьемки";
             string com2 = "Добавления на изображение отметку, когда фото было сделано";
-            string com3 = "Сортировка изображений по папкам по годам";
+            string com3 = "Сортировка изображений  по годам";
 
             Console.WriteLine("Ваши команды:"  );
             Console.WriteLine("Введите 1 для: "+ com1);
@@ -25,7 +25,7 @@ namespace Laba
             Console.WriteLine("Введите 3 для: "+ com3);
 
                 //switch (Console.ReadLine())
-                switch ("2")
+                switch ("3")
             {
                     case "1":
                     {
@@ -41,8 +41,7 @@ namespace Laba
 
                     case "3":
                     {
-                        OneDraw();
-                        //JustDraw();
+                        SortDependsOnYear(com3);
                     }
                         break;
 
@@ -365,6 +364,70 @@ namespace Laba
                
             }
             
+        }
+
+        public static void SortDependsOnYear(string com3)
+        {
+            Console.WriteLine("Введите ваш путь к папке изображений, который надо обработать.");
+            //string ImagePathEntered = Console.ReadLine();
+            string ImagePathEntered = "E:\\Images";
+            string dirName = new DirectoryInfo(ImagePathEntered).Name;
+            string ImagePathCreated = ImagePathEntered + $"\\{dirName}_{com3}";
+            DirectoryInfo dirInfo = new DirectoryInfo(ImagePathEntered);
+            DirectoryInfo dirInfo2 = new DirectoryInfo(ImagePathCreated);
+
+            if (!dirInfo2.Exists)
+            {
+                dirInfo.CreateSubdirectory($"{dirName}_{com3}");
+            }
+
+            var file_mas = dirInfo.GetFiles();
+
+            foreach (var item in file_mas)
+            {
+                if (item.Name.EndsWith(".jpg"))
+                {
+                    PropertyItem propItem = null;
+                    Image myImage = Image.FromFile(item.FullName);
+                    try
+                    {
+                        propItem = myImage.GetPropertyItem(306);
+                    }
+                    catch { }
+                    if (propItem != null)
+                    {
+                        string sdate2 = Encoding.UTF8.GetString(propItem.Value).Trim();
+                        string year = sdate2.Substring(0, 4);
+                        year = year.Replace(":", "-");
+                        DirectoryInfo dirInfo3 = new DirectoryInfo($@"{ImagePathCreated}\{year}");
+                        if (!dirInfo3.Exists)
+                        {
+                            dirInfo2.CreateSubdirectory(year);
+                        }
+                        File.Copy(item.FullName, $@"{ImagePathCreated}\{year}\{item.Name}" + ".jpg", true);
+                    }
+
+                    else
+                    {
+                        string tempName = Convert.ToString(item.CreationTime);
+                        tempName = tempName.Replace(" ", "_");
+                        tempName = tempName.Replace(".", "-");
+                        tempName = tempName.Replace(":", "_");
+                        tempName = tempName.Substring(6, 4);
+                        Console.WriteLine(tempName);
+                        DirectoryInfo dirInfo3 = new DirectoryInfo($@"{ImagePathCreated}\{tempName}");
+                        if (!dirInfo3.Exists)
+                        {
+                            dirInfo2.CreateSubdirectory(tempName);
+                        }
+
+                        File.Copy(item.FullName, $@"{ImagePathCreated}\{tempName}\{item.Name}" + ".jpg", true);
+
+                    }
+
+
+                }
+            }
         }
     }
 }
